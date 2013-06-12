@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../lib/opener/pos_tagger'
 
-tokenizer = Opener::POSTagger.new(:args=>ARGV)
+tokenizer = Opener::POSTagger.new
 
 output, error, process = tokenizer.run(STDIN.read)
 
