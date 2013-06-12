@@ -68,7 +68,7 @@ Enjoy!
 
 ## Usage
 
-POS Tagging some text (assuming that it is in a file called *english.kaf*):
+POS Tagging some text (assuming that the above text is in a file called *english.kaf*):
 
     cat english.kaf | pos-tagger
     
@@ -76,7 +76,7 @@ POS Tagging some text (assuming that it is in a file called *english.kaf*):
 Will result in
 
     <?xml version='1.0' encoding='UTF-8'?>
-    <KAF version="v1.opener" xml:lang="de">
+    <KAF version="v1.opener" xml:lang="en">
       <kafHeader>
         <linguisticProcessors layer="text">
           <lp name="opennlp-en-tok" timestamp="2013-06-11T13:41:37Z" version="1.0"/>
