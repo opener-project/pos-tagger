@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Opener
   class POSTagger
     ##
@@ -17,7 +19,7 @@ module Opener
       def initialize(options = {})
         @options = DEFAULT_OPTIONS.merge(options)
 
-        @option_parser = OptionParser.new do |opts|
+        @option_parser = ::OptionParser.new do |opts|
           opts.program_name   = 'pos-tagger'
           opts.summary_indent = '  '
 
