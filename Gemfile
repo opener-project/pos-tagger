@@ -1,11 +1,4 @@
 source 'https://rubygems.org'
+source 'https://opener:Aek0YeeGup0ceephohcieW0eichiGha2Thoo0lohshunae9emaikeitainooleap@geminabox.olery.com'
 
 gemspec
-
-gem 'opener-pos-tagger-base', :git=>"git@github.com:opener-project/pos-tagger-base.git", :branch => 'master'
-gem 'opener-pos-tagger-en', :git=>"git@github.com:opener-project/pos-tagger-en.git", :branch => 'master'
-gem 'opener-pos-tagger-fr', :git=>"git@github.com:opener-project/pos-tagger-fr.git", :branch => 'master'
-gem 'opener-pos-tagger-es', :git=>"git@github.com:opener-project/pos-tagger-es.git", :branch => 'master'
-gem 'opener-pos-tagger-it', :git=>"git@github.com:opener-project/pos-tagger-it.git", :branch => 'master'
-
-
