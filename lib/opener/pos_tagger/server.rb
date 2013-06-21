@@ -42,10 +42,12 @@ module Opener
           halt(400, 'No text specified')
         end
 
-        if params[:callbacks] and !params[:callbacks].strip.empty?
-          process_async
-        else
+        callbacks = extract_callbacks(params[:callbacks])
+        
+        if callbacks.empty?
           process_sync
+        else
+          process_async(callbacks)
         end
       end
 
@@ -69,10 +71,9 @@ module Opener
       ##
       # Processes the request asynchronously.
       #
-      def process_async
-        callbacks = params[:callbacks]
-        callbacks = [callbacks] unless callbacks.is_a?(Array)
-
+      # @param [Array] callbacks The callback URLs to use.
+      #
+      def process_async(callbacks)
         Thread.new do
           pos_tag_async(params[:text], callbacks, params[:error_callback])
         end
@@ -89,7 +90,7 @@ module Opener
       def pos_tag_text(text)
         pos_tagger             = POSTagger.new
         output, error, status = pos_tagger.run(text)
-
+        puts output
         raise(error) unless status.success?
 
         return output
@@ -104,7 +105,7 @@ module Opener
       #
       def pos_tag_async(text, callbacks, error_callback = nil)
         begin
-          kaf = pos_tag_text(text)
+          output = pos_tag_text(text)
         rescue => error
           logger.error("Failed to tag the text: #{error.message}")
 
@@ -116,9 +117,10 @@ module Opener
         url = callbacks.shift
 
         logger.info("Submitting results to #{url}")
+        logger.info("Using callback URLs: #{callbacks.join(', ')}")
 
         begin
-          process_callback(url, kaf, callbacks)
+          process_callback(url, output, callbacks)
         rescue => error
           logger.error("Failed to submit the results: #{error.inspect}")
 
@@ -128,13 +130,13 @@ module Opener
 
       ##
       # @param [String] url
-      # @param [String] kaf
+      # @param [String] text
       # @param [Array] callbacks
       #
-      def process_callback(url, kaf, callbacks)
+      def process_callback(url, text, callbacks)
         HTTPClient.post(
           url,
-          :body => {:kaf => kaf, :callbacks => callbacks}
+          :body => {:text => text, :'callbacks[]' => callbacks}
         )
       end
 
@@ -144,6 +146,18 @@ module Opener
       #
       def submit_error(url, message)
         HTTPClient.post(url, :body => {:error => message})
+      end
+
+      ##
+      # Returns an Array containing the callback URLs, ignoring empty values.
+      #
+      # @param [Array|String] input
+      # @return [Array]
+      #
+      def extract_callbacks(input)
+        callbacks = input.compact.reject(&:empty?)
+
+        return callbacks
       end
     end # Server
   end # POSTagger
