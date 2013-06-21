@@ -14,7 +14,11 @@ Gem::Specification.new do |gem|
   gem.executables = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files  = gem.files.grep(%r{^(test|spec|features)/})
 
-  
+  gem.add_dependency 'opener-pos-tagger-base'
+  gem.add_dependency 'opener-pos-tagger-en-es'
+  gem.add_dependency 'opener-pos-tagger-fr'
+  gem.add_dependency 'opener-pos-tagger-it'
+
   gem.add_dependency 'nokogiri'
   gem.add_dependency 'builder', '~>3.1'
   gem.add_dependency 'sinatra', '~>1.4.2'
