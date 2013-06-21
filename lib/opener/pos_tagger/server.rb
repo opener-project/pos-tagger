@@ -90,7 +90,7 @@ module Opener
       def pos_tag_text(text)
         pos_tagger             = POSTagger.new
         output, error, status = pos_tagger.run(text)
-        puts output
+        
         raise(error) unless status.success?
 
         return output
