@@ -1,10 +1,10 @@
 require 'opener/pos_taggers/base'
 require 'opener/pos_taggers/en'
 require 'opener/pos_taggers/fr'
-require 'opener/pos_taggers/es'
 require 'opener/pos_taggers/it'
 require 'nokogiri'
 require 'open3'
+require 'optparse'
 
 require_relative 'pos_tagger/version'
 require_relative 'pos_tagger/cli'
