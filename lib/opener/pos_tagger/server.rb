@@ -16,6 +16,12 @@ module Opener
         set :dump_errors, true
       end
 
+      helpers do
+        def webservice_path
+          (request.script_name + "/").gsub(/\/\//,'/')
+        end
+      end
+
       ##
       # Provides a page where you see a textfield and you can post stuff
       #
@@ -43,7 +49,7 @@ module Opener
         end
 
         callbacks = extract_callbacks(params[:callbacks])
-        
+
         if callbacks.empty?
           process_sync
         else
@@ -62,10 +68,10 @@ module Opener
         content_type(:xml)
 
         body(output)
-      rescue => error
-        logger.error("Failed to analyze the text: #{error.inspect}")
+      #rescue => error
+        #logger.error("Failed to analyze the text: #{error.inspect}")
 
-        halt(500, error.message)
+        #halt(500, error.message)
       end
 
       ##
@@ -90,7 +96,7 @@ module Opener
       def pos_tag_text(text)
         pos_tagger             = POSTagger.new
         output, error, status = pos_tagger.run(text)
-        
+
         raise(error) unless status.success?
 
         return output
