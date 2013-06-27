@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'opener-pos-tagger-en-es'
   gem.add_dependency 'opener-pos-tagger-fr'
   gem.add_dependency 'opener-pos-tagger-it'
+  gem.add_dependency 'opener-webservice'
 
   gem.add_dependency 'nokogiri'
   gem.add_dependency 'builder', '~>3.1'
