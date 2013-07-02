@@ -79,7 +79,7 @@ module Opener
     # @return [Class]
     #
     def language_constant(language)
-      Opener::POSTaggers.const_get(language.upcase)
+      return language && POSTaggers.const_get(language.upcase)
     end
 
     ##
