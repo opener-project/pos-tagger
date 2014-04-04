@@ -48,15 +48,9 @@ Examples:
 
         tagger = POSTagger.new(options)
 
-        stdout, stderr, process = tagger.run(input)
+        stdout = tagger.run(input)
 
-        if process.success?
-          puts stdout
-
-          STDERR.puts(stderr) unless stderr.empty?
-        else
-          abort stderr
-        end
+        puts stdout
       end
 
       private
