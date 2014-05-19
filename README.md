@@ -1,78 +1,37 @@
-# POSTagger
+POS-tagger
+------------
 
-Component that wraps the different existing POS Taggers.
+Component that wraps the different existing POS Taggers based on OpenNLP.
 
-## Requirements
+### Confused by some terminology?
 
-* Perl 5
-* Ruby 1.9.2 or newer
-* Make
+This software is part of a larger collection of natural language processing
+tools known as "the OpeNER project". You can find more information about the
+project at (the OpeNER portal)[http://opener-project.github.io]. There you can
+also find references to terms like KAF (an XML standard to represent linguistic
+annotations in texts), component, cores, scenario's and pipelines.
 
-## Developers
+Quick Use Example
+-----------------
 
-See how to edit / change / compile this gem at the bottom of this file.
+Installing the pos-tagger can be done by executing:
 
-## Installation
+    gem install opener-pos-tagger
 
-### As part of a Gemfile in a Ruby application
+Please bare in mind that all components in OpeNER take KAF as an input and
+output KAF by default.
 
-Add this line to your application's Gemfile:
+### Command line interface
 
-    gem 'opener-pos-tagger',
-        :git=>"git@github.com:opener-project/pos-tagger.git"
+You should now be able to call the POS tagger as a regular shell
+command: by its name. Once installed the gem normalyl sits in your path so you can call it directly from anywhere.
 
-And then execute:
-
-    $ bundle install
-
-### As a standalone GEM:
-
-Make sure you have the ```specific_install``` gem installed first by running
-
-    $ gem install specific_install
-
-After that you can install the gem from the git repository like this:
-
-    $ gem specific_install opener-pos-tagger \
-        -l https://github.com/opener-project/pos-tagger.git
-
-Once the gem is installed you have access to the following command from
-anywhere on your computer:
-
-    $ cat englist.kaf | pos-tagger
-
-or you can launch a webservice with
-
-    $ pos-tagger-server
-
-Sample KAF file text:
-
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-    <KAF version="v1.opener" xml:lang="en">
-      <kafHeader>
-        <linguisticProcessors layer="text">
-          <lp name="opennlp-en-tok" timestamp="2013-06-11T13:41:37Z" version="1.0"/>
-          <lp name="opennlp-en-sent" timestamp="2013-06-11T13:41:37Z" version="1.0"/>
-        </linguisticProcessors>
-      </kafHeader>
-      <text>
-        <wf length="4" offset="0" para="1" sent="1" wid="w1">this</wf>
-        <wf length="2" offset="5" para="1" sent="1" wid="w2">is</wf>
-        <wf length="2" offset="8" para="1" sent="1" wid="w3">an</wf>
-        <wf length="7" offset="11" para="1" sent="1" wid="w4">english</wf>
-        <wf length="4" offset="19" para="1" sent="1" wid="w5">text</wf>
-      </text>
-    </KAF>
-
-Enjoy!
-
-## Usage
+This aplication reads a text from standard input in order to identify the language.
 
 POS Tagging some text (assuming that the above text is in a file called *english.kaf*):
 
     cat english.kaf | pos-tagger
     
-
 Will result in
 
     <?xml version='1.0' encoding='UTF-8'?>
@@ -121,41 +80,85 @@ Will result in
         </term>
       </terms>
     </KAF>
-  
-## Server
 
-The POS Tagger comes equipped with a simple webservice. To start the
-webservice type:
+### Webservices
+
+You can launch a language identification webservice by executing:
 
     pos-tagger-server
 
 This will launch a mini webserver with the webservice. It defaults to port 9292,
-so you can access it at:
+so you can access it at <http://localhost:9292>.
 
-    http://localhost:9292
-
-To launch it on a different port provide the ```-p [port-number]``` option like
+To launch it on a different port provide the `-p [port-number]` option like
 this:
 
     pos-tagger-server -p 1234
 
-It then launches at ```http://localhost:1234```
+It then launches at <http://localhost:1234>
 
 Documentation on the Webservice is provided by surfing to the urls provided
-above. 
+above. For more information on how to launch a webservice run the command with
+the ```-h``` option.
 
 
-## Contributing
+### Daemon
 
-### Procedure
+Last but not least the POS tagger comes shipped with a daemon that
+can read jobs (and write) jobs to and from Amazon SQS queues. For more
+information type:
 
-1. Pull it
-2. Create your feature branch (`git checkout -b features/my-new-feature`)
+    pos-tagger-daemon -h
+
+Description of dependencies
+---------------------------
+
+This component runs best if you run it in an environment suited for OpeNER
+components. You can find an installation guide and helper tools in the (OpeNER
+installer)[https://github.com/opener-project/opener-installer] and (an
+installation guide on the Opener
+Website)[http://opener-project.github.io/getting-started/how-to/local-installation.html]
+
+At least you need the following system setup:
+
+### Depenencies for normal use:
+
+* JRuby (1.7.9+)
+* Java 1.7 or newer (There are problems with encoding in older versions).
+
+### Dependencies if you want to modify the component:
+
+* Maven (for building the Gem)
+
+Language Extension
+------------------
+
+  TODO
+
+The Core
+--------
+
+The component is a fat wrapper around the actual language technology core. You
+can find the core technolies in the following repositories: (https://github.com/opener-project/?query=pos)[https://github.com/opener-project/?query=pos]
+
+Where to go from here
+---------------------
+
+* Check (the project websitere)[http://opener-project.github.io]
+* (Checkout the webservice)[http://opener.olery.com/pos-tagger]
+
+Report problem/Get help
+-----------------------
+
+If you encounter problems, please email support@opener-project.eu or leave an
+issue in the (issue tracker)[https://github.com/opener-project/pos-tagger/issues].
+
+
+Contributing
+------------
+
+1. Fork it ( http://github.com/opener-project/pos-tagger/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin features/my-new-feature`)
-5. If you're confident, merge your changes into master.
-
-# What's next? 
-
-If you're interested in the pos_tagger, you also might want to check
-out opener-project/pos-tagger.
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
