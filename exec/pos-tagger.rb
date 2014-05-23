@@ -4,6 +4,6 @@ require 'opener/daemons'
 require_relative '../lib/opener/pos_tagger'
 
 options = Opener::Daemons::OptParser.parse!(ARGV)
-daemon  = Opener::Daemons::Daemon.new(Opener::PosTagger, options)
+daemon  = Opener::Daemons::Daemon.new(Opener::POSTagger, options)
 
 daemon.start
