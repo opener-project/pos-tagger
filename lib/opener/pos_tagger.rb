@@ -6,6 +6,7 @@ require 'optparse'
 
 require_relative 'pos_tagger/version'
 require_relative 'pos_tagger/cli'
+require_relative 'pos_tagger/error_layer'
 
 module Opener
   ##
@@ -45,15 +46,19 @@ module Opener
     # @return [Array]
     #
     def run(input)
-      language = language_from_kaf(input)
+      begin
+        language = language_from_kaf(input)
 
-      unless valid_language?(language)
-        raise ArgumentError, "The specified language (#{language}) is invalid"
+        unless valid_language?(language)
+          raise ArgumentError, "The specified language (#{language}) is invalid"
+        end
+
+        kernel = language_constant(language).new(:args => options[:args])
+
+        return kernel.run(input)
+      rescue Exception => error
+        return ErrorLayer.new(input, error.message, self.class).add
       end
-
-      kernel = language_constant(language).new(:args => options[:args])
-
-      return kernel.run(input)
     end
 
     alias tag run
