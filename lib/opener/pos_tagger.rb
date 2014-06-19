@@ -3,6 +3,7 @@ require 'opener/pos_taggers/en'
 require 'nokogiri'
 require 'open3'
 require 'optparse'
+require 'opener/core'
 
 require_relative 'pos_tagger/version'
 require_relative 'pos_tagger/cli'
