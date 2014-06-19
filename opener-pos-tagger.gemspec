@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.executables = Dir.glob('bin/*').map { |file| File.basename(file) }
 
   gem.add_dependency 'opener-pos-tagger-base'
-  gem.add_dependency 'opener-pos-tagger-en-es'
+  gem.add_dependency 'opener-pos-tagger-en-es', ['~> 2.0', '>= 2.0.2']
   gem.add_dependency 'opener-webservice'
 
   gem.add_dependency 'nokogiri'
