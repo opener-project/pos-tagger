@@ -3,10 +3,10 @@ require 'opener/pos_taggers/en'
 require 'nokogiri'
 require 'open3'
 require 'optparse'
+require 'opener/core'
 
 require_relative 'pos_tagger/version'
 require_relative 'pos_tagger/cli'
-require_relative 'pos_tagger/error_layer'
 
 module Opener
   ##
@@ -57,7 +57,7 @@ module Opener
 
         return kernel.run(input)
       rescue Exception => error
-        return ErrorLayer.new(input, error.message, self.class).add
+        return Opener::Core::ErrorLayer.new(input, error.message, self.class).add
       end
     end
 
