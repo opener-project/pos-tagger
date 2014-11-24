@@ -3,7 +3,6 @@ require 'opener/pos_taggers/en'
 require 'nokogiri'
 require 'open3'
 require 'optparse'
-require 'opener/core'
 
 require_relative 'pos_tagger/version'
 require_relative 'pos_tagger/cli'
@@ -46,19 +45,15 @@ module Opener
     # @return [Array]
     #
     def run(input)
-      begin
-        language = language_from_kaf(input)
+      language = language_from_kaf(input)
 
-        unless valid_language?(language)
-          raise ArgumentError, "The specified language (#{language}) is invalid"
-        end
-
-        kernel = language_constant(language).new(:args => options[:args])
-
-        return kernel.run(input)
-      rescue Exception => error
-        return Opener::Core::ErrorLayer.new(input, error.message, self.class).add
+      unless valid_language?(language)
+        raise ArgumentError, "The specified language (#{language}) is invalid"
       end
+
+      kernel = language_constant(language).new(:args => options[:args])
+
+      return kernel.run(input)
     end
 
     alias tag run
