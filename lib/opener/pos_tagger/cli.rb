@@ -1,72 +1,57 @@
-require 'optparse'
-
 module Opener
   class POSTagger
     ##
-    # CLI wrapper around {Opener::POSTagger} using OptionParser.
+    # CLI wrapper around {Opener::POSTagger} using Slop.
     #
-    # @!attribute [r] options
-    #  @return [Hash]
-    # @!attribute [r] option_parser
-    #  @return [OptionParser]
+    # @!attribute [r] parser
+    #  @return [Slop]
     #
     class CLI
-      attr_reader :options, :option_parser
+      attr_reader :parser
+
+      def initialize
+        @parser = configure_slop
+      end
 
       ##
-      # @param [Hash] options
+      # @param [Array] argv
       #
-      def initialize(options = {})
-        @options = DEFAULT_OPTIONS.merge(options)
+      def run(argv = ARGV)
+        parser.parse(argv)
+      end
 
-        @option_parser = ::OptionParser.new do |opts|
-          opts.program_name   = 'pos-tagger'
-          opts.summary_indent = '  '
+      ##
+      # @return [Slop]
+      #
+      def configure_slop
+        return Slop.new(:strict => false, :indent => 2, :help => true) do
+          banner 'Usage: pos-tagger [OPTIONS]'
 
-          opts.on('-h', '--help', 'Shows this help message') do
-            show_help
-          end
+          separator <<-EOF.chomp
 
-          opts.on('-v', '--version', 'Shows the current version') do
-            show_version
-          end
+About:
 
-          opts.separator <<-EOF
+    POS tagger component with support for various languages such as Dutch and
+    English. This component reads input from STDIN.
 
-Examples:
+Example:
 
-  cat example.kaf | #{opts.program_name}
+    cat some_file.kaf | pos-tagger
           EOF
+
+          separator "\nOptions:\n"
+
+          on :v, :version, 'Shows the current version' do
+            abort "pos-tagger v#{VERSION} on #{RUBY_DESCRIPTION}"
+          end
+
+          run do |opts, args|
+            tagger = POSTagger.new(:args => args)
+            input  = STDIN.tty? ? nil : STDIN.read
+
+            puts tagger.run(input)
+          end
         end
-      end
-
-      ##
-      # @param [String] input
-      #
-      def run(input)
-        option_parser.parse!(options[:args])
-
-        tagger = POSTagger.new(options)
-
-        stdout = tagger.run(input)
-
-        puts stdout
-      end
-
-      private
-
-      ##
-      # Shows the help message and exits the program.
-      #
-      def show_help
-        abort option_parser.to_s
-      end
-
-      ##
-      # Shows the version and exits the program.
-      #
-      def show_version
-        abort "#{option_parser.program_name} v#{VERSION} on #{RUBY_DESCRIPTION}"
       end
     end # CLI
   end # POSTagger
