@@ -4,7 +4,7 @@ require 'opener/daemons'
 
 controller = Opener::Daemons::Controller.new(
   :name      => 'opener-pos-tagger',
-  :exec_path => File.expand_path('../../exec/pos-atgger.rb', __FILE__)
+  :exec_path => File.expand_path('../../exec/pos-tagger.rb', __FILE__)
 )
 
 controller.run
