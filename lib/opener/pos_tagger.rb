@@ -1,7 +1,10 @@
+require 'open3'
+
+require 'opener/core'
 require 'opener/pos_taggers/base'
 require 'opener/pos_taggers/en'
+
 require 'nokogiri'
-require 'open3'
 require 'slop'
 
 require_relative 'pos_tagger/version'
@@ -47,8 +50,8 @@ module Opener
     def run(input)
       language = language_from_kaf(input)
 
-      unless valid_language?(language)
-        raise ArgumentError, "The specified language (#{language}) is invalid"
+      if !language or !valid_language?(language)
+        raise Core::UnsupportedLanguageError, language
       end
 
       kernel = language_constant(language).new(:args => options[:args])
@@ -58,19 +61,21 @@ module Opener
 
     alias tag run
 
-    protected
-
     ##
-    # Extracts the language from a KAF document.
+    # Extracts the language from a KAF document, returns `nil` if no language
+    # was found.
     #
     # @param [String] input
     # @return [String]
     #
     def language_from_kaf(input)
-      reader = Nokogiri::XML::Reader(input)
+      document = Nokogiri::XML(input)
+      language = document.xpath('KAF/@xml:lang')[0]
 
-      return reader.read.lang
+      return language ? language.to_s : nil
     end
+
+    private
 
     ##
     # @param [String] language
