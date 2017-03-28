@@ -23,6 +23,8 @@ Gem::Specification.new do |gem|
 
   gem.executables = Dir.glob('bin/*').map { |file| File.basename(file) }
 
+  gem.add_dependency 'newrelic_rpm', '~> 3.0'
+
   gem.add_dependency 'opener-pos-tagger-base', ['~> 2.0', '>= 2.1.0']
   gem.add_dependency 'opener-pos-tagger-en-es', ['~> 2.0', '>= 2.0.2']
 
