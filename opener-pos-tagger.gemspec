@@ -7,7 +7,6 @@ Gem::Specification.new do |gem|
   gem.summary               = 'Gem that wraps up the different existing pos-taggers'
   gem.description           = gem.summary
   gem.homepage              = 'http://opener-project.github.com/'
-  gem.has_rdoc              = "yard"
   gem.required_ruby_version = ">= 1.9.2"
 
   gem.license = 'Apache 2.0'
@@ -22,8 +21,6 @@ Gem::Specification.new do |gem|
   ]).select { |file| File.file?(file) }
 
   gem.executables = Dir.glob('bin/*').map { |file| File.basename(file) }
-
-  gem.add_dependency 'newrelic_rpm', '~> 3.0'
 
   gem.add_dependency 'opener-pos-tagger-base', ['~> 2.0', '>= 2.1.0']
   gem.add_dependency 'opener-pos-tagger-en-es', ['~> 2.0', '>= 2.0.2']
