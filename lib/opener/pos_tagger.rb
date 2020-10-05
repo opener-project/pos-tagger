@@ -47,7 +47,7 @@ module Opener
     # @param [String] input The input to process.
     # @return [Array]
     #
-    def run(input)
+    def run input, params = {}
       language = language_from_kaf(input)
 
       if !language or !valid_language?(language)
@@ -91,5 +91,6 @@ module Opener
     def valid_language?(language)
       return Opener::POSTaggers.const_defined?(language.upcase)
     end
-  end # POSTagger
-end # Opener
+
+  end
+end
